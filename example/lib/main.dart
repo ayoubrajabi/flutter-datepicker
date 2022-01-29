@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_linear_datepicker/flutter_datepicker.dart';
+import 'package:shamsi_date/shamsi_date.dart';
 
 void main() {
   runApp(MyApp());
@@ -21,6 +22,7 @@ class MyApp extends StatelessWidget {
 class MyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    Jalali j = Jalali.fromDateTime(DateTime.now());
     return Scaffold(
       appBar: AppBar(
         title: Text("DatePicker Demo"),
@@ -31,9 +33,9 @@ class MyHomePage extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               LinearDatePicker(
-                startDate: "1396/12/12",
-                endDate: "1398/01/14",
-                initialDate: "1397/05/05",
+                startDate: "1370/01/01",
+                endDate: "${j.year}/${j.month}/${j.day}",
+                initialDate: "${j.year}/${j.month}/${j.day}",
                 dateChangeListener: (String selectedDate) {
                   print(selectedDate);
                 },
@@ -46,7 +48,8 @@ class MyHomePage extends StatelessWidget {
                 selectedRowStyle: TextStyle(
                   fontFamily: 'iran',
                   fontSize: 18.0,
-                  color: Colors.deepOrange,
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
                 ),
                 unselectedRowStyle: TextStyle(
                   fontFamily: 'iran',
@@ -56,19 +59,19 @@ class MyHomePage extends StatelessWidget {
                 yearText: "سال | year",
                 monthText: "ماه | month",
                 dayText: "روز | day",
-                showLabels: true,
+                showLabels: false,
                 columnWidth: 100,
                 showMonthName: true,
                 isJalaali: true,
               ),
-              RaisedButton(
-                child: Text(
-                  "Pick Date | انتخاب تاریخ",
-                ),
-                onPressed: () {
-                  showDateDialog(context);
-                },
-              ),
+              // RaisedButton(
+              //   child: Text(
+              //     "Pick Date | انتخاب تاریخ",
+              //   ),
+              //   onPressed: () {
+              //     showDateDialog(context);
+              //   },
+              // ),
             ],
           ),
         ),
