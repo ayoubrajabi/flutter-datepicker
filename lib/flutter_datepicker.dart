@@ -95,101 +95,65 @@ class _LinearDatePickerState extends State<LinearDatePicker> {
   Widget build(BuildContext context) {
     maxDay = _getMonthLength(_selectedYear, _selectedMonth);
 
-    return Column(
+    return Row(
       mainAxisAlignment: MainAxisAlignment.center,
-      mainAxisSize: MainAxisSize.min,
       children: [
+        NumberPicker.integer(
+            listViewWidth: widget.columnWidth,
+            initialValue: _selectedYear!,
+            minValue: _getMinimumYear()!,
+            maxValue: _getMaximumYear(),
+            selectedRowStyle: widget.selectedRowStyle,
+            unselectedRowStyle: widget.unselectedRowStyle,
+            onChanged: (value) {
+              setState(() {
+                _selectedYear = value as int?;
+                if (widget.showDay)
+                  widget.dateChangeListener(
+                      "$_selectedYear/$_selectedMonth/$_selectedDay");
+                else
+                  widget.dateChangeListener("$_selectedYear/$_selectedMonth");
+              });
+            }),
+        NumberPicker.integer(
+            listViewWidth: widget.columnWidth,
+            initialValue: _selectedMonth!,
+            minValue: _getMinimumMonth(),
+            maxValue: _getMaximumMonth(),
+            selectedRowStyle: widget.selectedRowStyle,
+            unselectedRowStyle: widget.unselectedRowStyle,
+            isShowMonthName: widget.showMonthName,
+            isJalali: widget.isJalaali,
+            onChanged: (value) {
+              setState(() {
+                _selectedMonth = value as int?;
+                if (widget.showDay)
+                  widget.dateChangeListener(
+                      "$_selectedYear/$_selectedMonth/$_selectedDay");
+                else
+                  widget.dateChangeListener("$_selectedYear/$_selectedMonth");
+              });
+            }),
         Visibility(
-          visible: widget.showLabels,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              SizedBox(
-                  width: widget.columnWidth,
-                  child: Text(
-                    widget.yearText,
-                    style: widget.labelStyle,
-                    textAlign: TextAlign.center,
-                  )),
-              SizedBox(
-                  width: widget.columnWidth,
-                  child: Text(
-                    widget.monthText,
-                    style: widget.labelStyle,
-                    textAlign: TextAlign.center,
-                  )),
-              Visibility(
-                visible: widget.showDay,
-                child: SizedBox(
-                    width: widget.columnWidth,
-                    child: Text(
-                      widget.dayText,
-                      style: widget.labelStyle,
-                      textAlign: TextAlign.center,
-                    )),
-              ),
-            ],
-          ),
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            NumberPicker.integer(
-                listViewWidth: widget.columnWidth,
-                initialValue: _selectedYear!,
-                minValue: _getMinimumYear()!,
-                maxValue: _getMaximumYear(),
-                selectedRowStyle: widget.selectedRowStyle,
-                unselectedRowStyle: widget.unselectedRowStyle,
-                onChanged: (value) {
-                  setState(() {
-                    _selectedYear = value as int?;
-                    if (widget.showDay)
-                      widget.dateChangeListener("$_selectedYear/$_selectedMonth/$_selectedDay");
-                    else
-                      widget.dateChangeListener("$_selectedYear/$_selectedMonth");
-                  });
-                }),
-            NumberPicker.integer(
-                listViewWidth: widget.columnWidth,
-                initialValue: _selectedMonth!,
-                minValue: _getMinimumMonth(),
-                maxValue: _getMaximumMonth(),
-                selectedRowStyle: widget.selectedRowStyle,
-                unselectedRowStyle: widget.unselectedRowStyle,
-                isShowMonthName: widget.showMonthName,
-                isJalali: widget.isJalaali,
-                onChanged: (value) {
-                  setState(() {
-                    _selectedMonth = value as int?;
-                    if (widget.showDay)
-                      widget.dateChangeListener("$_selectedYear/$_selectedMonth/$_selectedDay");
-                    else
-                      widget.dateChangeListener("$_selectedYear/$_selectedMonth");
-                  });
-                }),
-            Visibility(
-              visible: widget.showDay,
-              child: NumberPicker.integer(
-                  listViewWidth: widget.columnWidth,
-                  initialValue: _selectedDay,
-                  minValue: _getMinimumDay(),
-                  maxValue: _getMaximumDay(),
-                  selectedRowStyle: widget.selectedRowStyle,
-                  unselectedRowStyle: widget.unselectedRowStyle,
-                  onChanged: (value) {
-                    setState(() {
-                      _selectedDay = value as int;
-                      if (widget.showDay)
-                        widget.dateChangeListener("$_selectedYear/$_selectedMonth/$_selectedDay");
-                      else
-                        widget.dateChangeListener("$_selectedYear/$_selectedMonth");
-                    });
-                  }),
-            )
-          ],
-        ),
+          visible: widget.showDay,
+          child: NumberPicker.integer(
+              listViewWidth: widget.columnWidth,
+              initialValue: _selectedDay,
+              minValue: _getMinimumDay(),
+              maxValue: _getMaximumDay(),
+              selectedRowStyle: widget.selectedRowStyle,
+              unselectedRowStyle: widget.unselectedRowStyle,
+              onChanged: (value) {
+                setState(() {
+                  _selectedDay = value as int;
+                  if (widget.showDay)
+                    widget.dateChangeListener(
+                        "$_selectedYear/$_selectedMonth/$_selectedDay");
+                  else
+                    widget.dateChangeListener("$_selectedYear/$_selectedMonth");
+                });
+              }),
+        )
       ],
     );
   }
@@ -210,11 +174,13 @@ class _LinearDatePickerState extends State<LinearDatePicker> {
     } else {
       DateTime firstOfNextMonth;
       if (selectedMonth == 12) {
-        firstOfNextMonth = DateTime(selectedYear! + 1, 1, 1, 12); //year, selectedMonth, day, hour
+        firstOfNextMonth = DateTime(
+            selectedYear! + 1, 1, 1, 12); //year, selectedMonth, day, hour
       } else {
         firstOfNextMonth = DateTime(selectedYear!, selectedMonth! + 1, 1, 12);
       }
-      int numberOfDaysInMonth = firstOfNextMonth.subtract(Duration(days: 1)).day;
+      int numberOfDaysInMonth =
+          firstOfNextMonth.subtract(Duration(days: 1)).day;
       //.subtract(Duration) returns a DateTime, .day gets the integer for the day of that DateTime
       return numberOfDaysInMonth;
     }
@@ -265,7 +231,8 @@ class _LinearDatePickerState extends State<LinearDatePicker> {
       var startList = widget.startDate.split("/");
       int startDay = int.parse(startList[2]);
 
-      if (_selectedYear == _getMinimumYear() && _selectedMonth == _getMinimumMonth()) {
+      if (_selectedYear == _getMinimumYear() &&
+          _selectedMonth == _getMinimumMonth()) {
         return startDay;
       }
     }
@@ -277,7 +244,8 @@ class _LinearDatePickerState extends State<LinearDatePicker> {
     if (widget.endDate.isNotEmpty && widget.showDay) {
       var endList = widget.endDate.split("/");
       int endDay = int.parse(endList[2]);
-      if (_selectedYear == _getMaximumYear() && _selectedMonth == _getMaximumMonth()) {
+      if (_selectedYear == _getMaximumYear() &&
+          _selectedMonth == _getMaximumMonth()) {
         return endDay;
       }
     }

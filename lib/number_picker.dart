@@ -54,7 +54,7 @@ class NumberPicker extends StatelessWidget {
           initialScrollOffset: (initialValue - minValue) ~/ step * itemExtent,
         ),
         decimalScrollController = null,
-        listViewHeight = 3 * itemExtent,
+        listViewHeight = 7 * itemExtent,
         integerItemCount = (maxValue - minValue) ~/ step + 1,
         super(key: key) {
     onChanged(selectedIntValue);
@@ -200,14 +200,6 @@ class NumberPicker extends StatelessWidget {
           width: listViewWidth,
           child: Stack(
             children: <Widget>[
-              Align(
-                alignment: Alignment.center,
-                child: Container(
-                  width: double.infinity,
-                  height: 55.0,
-                  color: Colors.grey.shade200,
-                ),
-              ),
               ListView.builder(
                 scrollDirection: scrollDirection,
                 controller: intScrollController,
@@ -218,7 +210,7 @@ class NumberPicker extends StatelessWidget {
                 itemCount: listItemCount,
                 cacheExtent: _calculateCacheExtent(listItemCount),
                 itemBuilder: (BuildContext context, int index) {
-                  final int value = _intValueFromIndex(index);
+                  final int value = _intValueFromIndex(index - 1);
 
                   //define special style for selected (middle) element
                   final TextStyle itemStyle =
