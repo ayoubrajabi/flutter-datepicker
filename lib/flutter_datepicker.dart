@@ -5,6 +5,7 @@ import 'number_picker.dart';
 
 class LinearDatePicker extends StatefulWidget {
   final bool showDay;
+  final bool showMonth;
   final Function(String date) dateChangeListener;
 
   final String startDate;
@@ -30,6 +31,7 @@ class LinearDatePicker extends StatefulWidget {
     this.initialDate = "",
     required this.dateChangeListener,
     this.showDay = true,
+    this.showMonth = true,
     this.labelStyle,
     this.selectedRowStyle,
     this.unselectedRowStyle,
@@ -108,32 +110,35 @@ class _LinearDatePickerState extends State<LinearDatePicker> {
             onChanged: (value) {
               setState(() {
                 _selectedYear = value as int?;
-                if (widget.showDay)
+                if (widget.showDay || widget.showMonth)
                   widget.dateChangeListener(
                       "$_selectedYear/$_selectedMonth/$_selectedDay");
                 else
-                  widget.dateChangeListener("$_selectedYear/$_selectedMonth");
+                  widget.dateChangeListener("$_selectedYear");
               });
             }),
-        NumberPicker.integer(
-            listViewWidth: widget.columnWidth,
-            initialValue: _selectedMonth!,
-            minValue: _getMinimumMonth(),
-            maxValue: _getMaximumMonth(),
-            selectedRowStyle: widget.selectedRowStyle,
-            unselectedRowStyle: widget.unselectedRowStyle,
-            isShowMonthName: widget.showMonthName,
-            isJalali: widget.isJalaali,
-            onChanged: (value) {
-              setState(() {
-                _selectedMonth = value as int?;
-                if (widget.showDay)
-                  widget.dateChangeListener(
-                      "$_selectedYear/$_selectedMonth/$_selectedDay");
-                else
-                  widget.dateChangeListener("$_selectedYear/$_selectedMonth");
-              });
-            }),
+        Visibility(
+          visible: widget.showMonth,
+          child: NumberPicker.integer(
+              listViewWidth: widget.columnWidth,
+              initialValue: _selectedMonth!,
+              minValue: _getMinimumMonth(),
+              maxValue: _getMaximumMonth(),
+              selectedRowStyle: widget.selectedRowStyle,
+              unselectedRowStyle: widget.unselectedRowStyle,
+              isShowMonthName: widget.showMonthName,
+              isJalali: widget.isJalaali,
+              onChanged: (value) {
+                setState(() {
+                  _selectedMonth = value as int?;
+                  if (widget.showDay || widget.showMonth)
+                    widget.dateChangeListener(
+                        "$_selectedYear/$_selectedMonth/$_selectedDay");
+                  else
+                    widget.dateChangeListener("$_selectedYear");
+                });
+              }),
+        ),
         Visibility(
           visible: widget.showDay,
           child: NumberPicker.integer(
@@ -146,11 +151,11 @@ class _LinearDatePickerState extends State<LinearDatePicker> {
               onChanged: (value) {
                 setState(() {
                   _selectedDay = value as int;
-                  if (widget.showDay)
+                  if (widget.showDay || widget.showMonth)
                     widget.dateChangeListener(
                         "$_selectedYear/$_selectedMonth/$_selectedDay");
                   else
-                    widget.dateChangeListener("$_selectedYear/$_selectedMonth");
+                    widget.dateChangeListener("$_selectedYear");
                 });
               }),
         )

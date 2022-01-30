@@ -1,7 +1,6 @@
 extension StringExt on int {
-
-  String getMonthName(bool isJalali){
-    if(isJalali)
+  String getMonthName(bool isJalali) {
+    if (isJalali)
       return this.jalaliMonthName;
     else
       return this.gregorianMonthName;

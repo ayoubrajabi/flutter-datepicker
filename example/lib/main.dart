@@ -35,6 +35,7 @@ class MyHomePage extends StatelessWidget {
           print(selectedDate);
         },
         showDay: true,
+        showMonth: true,
         labelStyle: TextStyle(
           fontFamily: 'iran',
           fontSize: 14.0,
