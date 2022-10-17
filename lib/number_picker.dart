@@ -495,11 +495,11 @@ class _NumberPickerDialogControllerState extends State<NumberPickerDialog> {
       titlePadding: widget.titlePadding,
       content: _buildNumberPicker(),
       actions: [
-        FlatButton(
+        TextButton(
           onPressed: () => Navigator.of(context).pop(),
           child: widget.cancelWidget,
         ),
-        FlatButton(
+        TextButton(
             onPressed: () => Navigator.of(context).pop(widget.decimalPlaces > 0
                 ? selectedDoubleValue
                 : selectedIntValue),
