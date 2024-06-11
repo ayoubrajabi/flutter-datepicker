@@ -25,7 +25,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  String date;
+  String? date;
 
   Future ad(String selectedDate) async {
     Future.delayed(Duration.zero, () {
@@ -44,7 +44,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: Column(
         children: [
-          Text(date),
+          if (date != null) Text(date!),
           SizedBox(
             child: LinearDatePicker(
               startDate: "1370/01/01",

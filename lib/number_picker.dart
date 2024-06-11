@@ -1,6 +1,5 @@
 import 'dart:math' as math;
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
@@ -182,8 +181,8 @@ class NumberPicker extends StatelessWidget {
     TextStyle defaultStyle;
     TextStyle selectedStyle;
 
-    defaultStyle = unselectedRowStyle ?? themeData.textTheme.bodyText2!;
-    selectedStyle = selectedRowStyle ?? themeData.textTheme.subtitle2!;
+    defaultStyle = unselectedRowStyle ?? themeData.textTheme.bodyMedium!;
+    selectedStyle = selectedRowStyle ?? themeData.textTheme.titleSmall!;
 
     var listItemCount = integerItemCount + 2;
 
